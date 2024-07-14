@@ -467,7 +467,7 @@ protected:
         if (msg[11]) ventilation_levels_[7] = msg[11]; */
         if (msg[0]) ventilation_levels_[0] = msg[0];
         if (msg[1]) ventilation_levels_[1] = msg[1];
-        if (msg[2]) ventilation_levels_[2] = msg[2;
+        if (msg[2]) ventilation_levels_[2] = msg[2];
         if (msg[3]) ventilation_levels_[3] = msg[3];
         if (msg[4]) ventilation_levels_[4] = msg[4];
         if (msg[5]) ventilation_levels_[5] = msg[5];

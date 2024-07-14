@@ -61,7 +61,7 @@ Response: ACK
           supply ? ventilation_levels_[7] : 0,
           0x00
       }; */
-        ESP_LOGD(TAG, "SETTING ventilation_levels_ TO: Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[10], ventilation_levels_[11]);
+        ESP_LOGI(TAG, "SETTING ventilation_levels_ TO: Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[10], ventilation_levels_[11]);
       write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
 
 
@@ -454,18 +454,25 @@ protected:
       }
       case RES_GET_VENTILATION_LEVEL: {
 
-        ESP_LOGD(TAG, "Level %02x", msg[8]);
+        ESP_LOGD(TAG, "Level Supply: %i, Level Exhaust: %i", msg[7], msg[8]);
 
         ESP_LOGD(TAG, "Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", msg[0], msg[3], msg[1], msg[4], msg[2], msg[5], msg[10], msg[11]);
-        if (msg[0]) ventilation_levels_[0] = msg[0];
+/*         if (msg[0]) ventilation_levels_[0] = msg[0];
         if (msg[3]) ventilation_levels_[1] = msg[3];
         if (msg[1]) ventilation_levels_[2] = msg[1];
         if (msg[4]) ventilation_levels_[3] = msg[4];
         if (msg[2]) ventilation_levels_[4] = msg[2];
         if (msg[5]) ventilation_levels_[5] = msg[5];
         if (msg[10]) ventilation_levels_[6] = msg[10];
+        if (msg[11]) ventilation_levels_[7] = msg[11]; */
+        if (msg[0]) ventilation_levels_[0] = msg[0];
+        if (msg[1]) ventilation_levels_[1] = msg[3];
+        if (msg[2]) ventilation_levels_[2] = msg[1];
+        if (msg[3]) ventilation_levels_[3] = msg[4];
+        if (msg[4]) ventilation_levels_[4] = msg[2];
+        if (msg[5]) ventilation_levels_[5] = msg[5];
+        if (msg[10]) ventilation_levels_[6] = msg[10];
         if (msg[11]) ventilation_levels_[7] = msg[11];
-
         if (return_air_level != nullptr) {
           return_air_level->publish_state(msg[6]);
         }

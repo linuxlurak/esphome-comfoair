@@ -14,6 +14,16 @@
 #define COMMAND_IDX_DATA 4
 #define COMMAND_IDX_MSG_ID 3
 
+
+// =================================================
+// ==========      CC-Ease emulation      ==========
+// =================================================
+
+static const uint8_t COMFOAIR_GET_CC_EASE_DATA_REQUEST = 0x33;
+static const uint8_t COMFOAIR_GET_CC_EASE_DATA_RESPONSE = 0x3c;
+static const uint8_t COMFOAIR_SET_CC_EASE_BUTTON_REQUEST = 0x37;
+static const uint8_t COMFOAIR_SET_CC_EASE_BUTTON_LENGTH = 0x07;
+
 // =================================================
 // ========== Bootloader (PC an ComfoAir) ==========
 // =================================================

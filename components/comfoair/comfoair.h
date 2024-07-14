@@ -24,7 +24,33 @@ public:
   void control_set_operation_mode(bool exhaust, bool supply) {
     ESP_LOGI(TAG, "Setting operation mode target exhaust: %i, supply: %i", exhaust, supply);
     {
+
+/*
+Data: 9 bytes
+Byte[0] = Exhaust air absent (%)
+Byte[1] = Exhaust air low / level 1 (%)
+Byte[2] = Exhaust air medium / level 2 (%)
+Byte[3] = Supply air level absent (%)
+Byte[4] = Supply air low / level 1 (%)
+Byte[5] = Supply air medium / level 2 (%)
+Byte[6] = Exhaust air high / level 3 (%)
+Byte[7] = Supply air high / level 3 (%)
+Byte[8] =
+
+Response: ACK
+*/
       uint8_t command[9] = {
+          exhaust ? ventilation_levels_[0] : 0,
+          exhaust ? ventilation_levels_[1] : 0,
+          exhaust ? ventilation_levels_[2] : 0,
+          supply ? ventilation_levels_[3] : 0,
+          supply ? ventilation_levels_[4] : 0,
+          supply ? ventilation_levels_[5] : 0,
+          exhaust ? ventilation_levels_[6] : 0,
+          supply ? ventilation_levels_[7] : 0,
+          0x00
+      };
+/*       uint8_t command[9] = {
           exhaust ? ventilation_levels_[0] : 0,
           exhaust ? ventilation_levels_[2] : 0,
           exhaust ? ventilation_levels_[4] : 0,
@@ -34,7 +60,7 @@ public:
           exhaust ? ventilation_levels_[6] : 0,
           supply ? ventilation_levels_[7] : 0,
           0x00
-      };
+      }; */
       write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
 
     }
@@ -428,6 +454,16 @@ protected:
 
         ESP_LOGD(TAG, "Level %02x", msg[8]);
 
+        ESP_LOGD(TAG, "Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", msg[0], msg[3], msg[1], msg[4], msg[2], msg[5], msg[10], msg[11]);
+        if (msg[0]) ventilation_levels_[0] = msg[0];
+        if (msg[3]) ventilation_levels_[1] = msg[3];
+        if (msg[1]) ventilation_levels_[2] = msg[1];
+        if (msg[4]) ventilation_levels_[3] = msg[4];
+        if (msg[2]) ventilation_levels_[4] = msg[2];
+        if (msg[5]) ventilation_levels_[5] = msg[5];
+        if (msg[10]) ventilation_levels_[6] = msg[10];
+        if (msg[11]) ventilation_levels_[7] = msg[11];
+
         if (return_air_level != nullptr) {
           return_air_level->publish_state(msg[6]);
         }
@@ -515,6 +551,10 @@ protected:
         }
 
         break;
+      }
+      case COMFOAIR_GET_CC_EASE_DATA_RESPONSE: {
+          ESP_LOGW(TAG, "CC_EASE Icon Data exhaust: %i, supply: %i", !!(msg[9] & 0x80), !!(msg[9] & 0x40));
+          break;
       }
       case RES_GET_STATUS: {
         if (preheating_present != nullptr) {

@@ -454,9 +454,9 @@ protected:
       }
       case RES_GET_VENTILATION_LEVEL: {
 
-        ESP_LOGD(TAG, "Level Supply: %i, Level Exhaust: %i", msg[7], msg[8]);
+        ESP_LOGI(TAG, "Level Supply: %i, Level Exhaust: %i, Level", msg[6], msg[7], msg[8]);
 
-        ESP_LOGD(TAG, "Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", msg[0], msg[3], msg[1], msg[4], msg[2], msg[5], msg[10], msg[11]);
+        ESP_LOGI(TAG, "Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", msg[0], msg[3], msg[1], msg[4], msg[2], msg[5], msg[10], msg[11]);
 /*         if (msg[0]) ventilation_levels_[0] = msg[0];
         if (msg[3]) ventilation_levels_[1] = msg[3];
         if (msg[1]) ventilation_levels_[2] = msg[1];

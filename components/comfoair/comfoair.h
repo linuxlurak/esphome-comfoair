@@ -14,7 +14,7 @@ namespace comfoair {
 
 static const char *TAG = "comfoair";
 
-class ComfoAirComponent : public climate::Climate,  public CustomAPIDevice, public PollingComponent, public uart::UARTDevice {
+class ComfoAirComponent : public climate::Climate, public CustomAPIDevice, public uart::UARTDevice, public PollingComponent {
 public:
 
   void setup() override {

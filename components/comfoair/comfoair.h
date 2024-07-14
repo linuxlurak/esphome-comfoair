@@ -17,6 +17,29 @@ static const char *TAG = "comfoair";
 class ComfoAirComponent : public climate::Climate, public PollingComponent, public uart::UARTDevice {
 public:
 
+  void setup() override {
+      register_service(&ComfoAirComponent::control_set_operation_mode, "climate_set_operation_mode", {"exhaust_fan", "supply_fan"});
+  }
+  
+  void control_set_operation_mode(bool exhaust, bool supply) {
+    ESP_LOGI(TAG, "Setting operation mode target exhaust: %i, supply: %i", exhaust, supply);
+    {
+      uint8_t command[9] = {
+          exhaust ? ventilation_levels_[0] : 0,
+          exhaust ? ventilation_levels_[2] : 0,
+          exhaust ? ventilation_levels_[4] : 0,
+          supply ? ventilation_levels_[1] : 0,
+          supply ? ventilation_levels_[3] : 0,
+          supply ? ventilation_levels_[5] : 0,
+          exhaust ? ventilation_levels_[6] : 0,
+          supply ? ventilation_levels_[7] : 0,
+          0x00
+      };
+      write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
+
+    }
+  }
+
   // Poll every 600ms
   ComfoAirComponent() :
   Climate(),
@@ -816,6 +839,8 @@ protected:
   uint8_t data_index_{0};
   int8_t update_counter_{-4};
   const int8_t num_update_counter_elements_{9};
+
+  uint8_t ventilation_levels_[8];
 
   uint8_t bootloader_version_[13]{0};
   uint8_t firmware_version_[13]{0};

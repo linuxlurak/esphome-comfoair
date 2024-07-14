@@ -40,14 +40,14 @@ Byte[8] =
 Response: ACK
 */
       uint8_t command[9] = {
-          exhaust ? ventilation_levels_[0] : 0,
-          exhaust ? ventilation_levels_[1] : 0,
-          exhaust ? ventilation_levels_[2] : 0,
-          supply ? ventilation_levels_[3] : 0,
-          supply ? ventilation_levels_[4] : 0,
-          supply ? ventilation_levels_[5] : 0,
-          exhaust ? ventilation_levels_[6] : 0,
-          supply ? ventilation_levels_[7] : 0,
+          exhaust ? ventilation_levels_[0] : 0, // ABSENT
+          exhaust ? ventilation_levels_[1] : 0, // 1
+          exhaust ? ventilation_levels_[2] : 0, // 2
+          supply ? ventilation_levels_[3] : 0,  // ABSENT 
+          supply ? ventilation_levels_[4] : 0,  // 1
+          supply ? ventilation_levels_[5] : 0,  // 2
+          exhaust ? ventilation_levels_[6] : 0, // 3
+          supply ? ventilation_levels_[7] : 0,  // 3
           0x00
       };
 /*       uint8_t command[9] = {
@@ -61,7 +61,9 @@ Response: ACK
           supply ? ventilation_levels_[7] : 0,
           0x00
       }; */
+        ESP_LOGD(TAG, "SETTING ventilation_levels_ TO: Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[10], ventilation_levels_[11]);
       write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
+
 
     }
   }

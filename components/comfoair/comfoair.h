@@ -61,7 +61,7 @@ Response: ACK
           supply ? ventilation_levels_[7] : 0,
           0x00
       }; */
-        ESP_LOGI(TAG, "SETTING ventilation_levels_ TO: Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[10], ventilation_levels_[11]);
+        ESP_LOGI(TAG, "SETTING ventilation_levels_ TO: Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7]);
       write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
 
 

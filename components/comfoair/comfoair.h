@@ -377,14 +377,14 @@ protected:
         memcpy(connector_board_version_, msg, data_[COMMAND_IDX_DATA]);
         break;
       case RES_GET_FAN_STATUS: {
-          if (intake_fan_speed != nullptr) {
-            intake_fan_speed->publish_state(msg[0]);
+          if (supply_fan_speed != nullptr) {
+            supply_fan_speed->publish_state(msg[0]);
           }
           if (exhaust_fan_speed != nullptr) {
             exhaust_fan_speed->publish_state(msg[1]);
           }
-          if (intake_fan_speed_rpm != nullptr) {
-            intake_fan_speed_rpm->publish_state(1875000.0f / get_uint16_(2));
+          if (supply_fan_speed_rpm != nullptr) {
+            supply_fan_speed_rpm->publish_state(1875000.0f / get_uint16_(2));
           }
           if (exhaust_fan_speed_rpm != nullptr) {
             exhaust_fan_speed_rpm->publish_state(1875000.0f / get_uint16_(4));
@@ -799,9 +799,9 @@ protected:
   }
 
   void get_fan_status_() {
-    if (intake_fan_speed != nullptr ||
+    if (supply_fan_speed != nullptr ||
         exhaust_fan_speed != nullptr ||
-        intake_fan_speed_rpm != nullptr ||
+        supply_fan_speed_rpm != nullptr ||
         exhaust_fan_speed_rpm != nullptr) {
       ESP_LOGD(TAG, "getting fan status");
       write_command_(CMD_GET_FAN_STATUS, nullptr, 0);
@@ -918,9 +918,9 @@ public:
   text_sensor::TextSensor *filter_status{nullptr};
   text_sensor::TextSensor *frost_protection_level{nullptr};
   text_sensor::TextSensor *preheating_valve{nullptr};
-  sensor::Sensor *intake_fan_speed{nullptr};
+  sensor::Sensor *supply_fan_speed{nullptr};
   sensor::Sensor *exhaust_fan_speed{nullptr};
-  sensor::Sensor *intake_fan_speed_rpm{nullptr};
+  sensor::Sensor *supply_fan_speed_rpm{nullptr};
   sensor::Sensor *exhaust_fan_speed_rpm{nullptr};
   sensor::Sensor *ventilation_level{nullptr};
   sensor::Sensor *outside_air_temperature{nullptr};
@@ -987,9 +987,9 @@ public:
 
   void set_type(text_sensor::TextSensor *type) { this->type = type; };
   void set_size(text_sensor::TextSensor *size) { this->size = size; };
-  void set_intake_fan_speed(sensor::Sensor *intake_fan_speed) { this->intake_fan_speed = intake_fan_speed; };
+  void set_supply_fan_speed(sensor::Sensor *supply_fan_speed) { this->supply_fan_speed = supply_fan_speed; };
   void set_exhaust_fan_speed(sensor::Sensor *exhaust_fan_speed) { this->exhaust_fan_speed = exhaust_fan_speed; };
-  void set_intake_fan_speed_rpm(sensor::Sensor *intake_fan_speed_rpm) { this->intake_fan_speed_rpm = intake_fan_speed_rpm; };
+  void set_supply_fan_speed_rpm(sensor::Sensor *supply_fan_speed_rpm) { this->supply_fan_speed_rpm = supply_fan_speed_rpm; };
   void set_exhaust_fan_speed_rpm(sensor::Sensor *exhaust_fan_speed_rpm) { this->exhaust_fan_speed_rpm = exhaust_fan_speed_rpm; };
   void set_ventilation_level(sensor::Sensor *ventilation_level) { this->ventilation_level = ventilation_level; };
   void set_bypass_valve(sensor::Sensor *bypass_valve) { this->bypass_valve = bypass_valve; };

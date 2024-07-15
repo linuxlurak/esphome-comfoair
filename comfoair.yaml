@@ -1,38 +1,65 @@
 esphome:
   name: comfoair
-  platform: ESP8266
+  friendly_name: comfoair
+
+esp8266:
   board: esp01_1m
-  includes:
-    - comfoair.h
 
-external_components:
-  - source:
-      type: git
-      url: https://github.com/wichers/esphome-comfoair
-    components: [comfoair]
-
-wifi:
-  ssid: 'your-wifi-ssid-here'
-  password: 'put-your-wifi-password-here'
-
-# Disable uart logging
+# Enable logging
 logger:
-  baud_rate: 0
+  level: DEBUG
+  logs:
+      comfoair: DEBUG
+      sensor: ERROR
+      binary_sensor: ERROR
+      text_sensor: ERROR
+      climate: ERROR
+  baud_rate: 0 #Disabling logging to serial port which is used for RS232-chip communication
+
+web_server:
+  port: 80
+  include_internal: True
+  ota: True
+  
 
 # Enable Home Assistant API
 api:
-  password: 'set-an-api-password-here'
+  encryption:
+    key: "SET-YOUR-OWN-VALUE"
+
+
 
 ota:
+  - platform: esphome
+    password: "SET-YOUR-OWN-VALUE"
+
 
 sensor:
 binary_sensor:
 
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp8266-Comfoair"
+    password: "SET-YOUR-OWN-VALUE"
+
+captive_portal:
+
+external_components:
+  - source:
+      type: git
+      #url: https://github.com/wichers/esphome-comfoair
+      url: https://github.com/linuxlurak/esphome-comfoair
+    components: [comfoair]
+    refresh: 0s
 uart:
   id: uart_bus
+  rx_pin: 3
+  tx_pin: 1
   baud_rate: 9600
-  tx_pin: TX
-  rx_pin: RX
 
 comfoair:
   name: "ComfoAir 350"
@@ -41,12 +68,12 @@ comfoair:
     name: "type"
   size:
     name: "size"
-  intake_fan_speed:
-    name: "intake_fan_speed"
+  supply_fan_speed:
+    name: "supply_fan_speed"
   exhaust_fan_speed:
     name: "exhaust_fan_speed"
-  intake_fan_speed_rpm:
-    name: "intake_fan_speed_rpm"
+  supply_fan_speed_rpm:
+    name: "supply_fan_speed_rpm"
   exhaust_fan_speed_rpm:
     name: "exhaust_fan_speed_rpm"
   ventilation_level:

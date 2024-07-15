@@ -40,14 +40,14 @@ Byte[8] =
 Response: ACK
 */
       uint8_t command[9] = {
-          exhaust ? ventilation_levels_[0] : 0, // ABSENT
-          exhaust ? ventilation_levels_[1] : 0, // 1
-          exhaust ? ventilation_levels_[2] : 0, // 2
-          supply ? ventilation_levels_[3] : 0,  // ABSENT 
-          supply ? ventilation_levels_[4] : 0,  // 1
-          supply ? ventilation_levels_[5] : 0,  // 2
-          exhaust ? ventilation_levels_[6] : 0, // 3
-          supply ? ventilation_levels_[7] : 0,  // 3
+          exhaust ? ventilation_levels_[0] : (uint8_t) 0, // ABSENT
+          exhaust ? ventilation_levels_[1] : (uint8_t) 0, // 1
+          exhaust ? ventilation_levels_[2] : (uint8_t) 0, // 2
+          supply ? ventilation_levels_[3] : (uint8_t) 0,  // ABSENT 
+          supply ? ventilation_levels_[4] : (uint8_t) 0,  // 1
+          supply ? ventilation_levels_[5] : (uint8_t) 0,  // 2
+          exhaust ? ventilation_levels_[6] : (uint8_t) 0, // 3
+          supply ? ventilation_levels_[7] : (uint8_t) 0,  // 3
           0x00
       };
 /*       uint8_t command[9] = {
@@ -71,8 +71,8 @@ Response: ACK
   // Poll every 600ms
   ComfoAirComponent() :
   Climate(),
-  PollingComponent(600),
-  UARTDevice() { }
+  UARTDevice() { },
+  PollingComponent(600)
 
   /// Return the traits of this controller.
   climate::ClimateTraits traits() override {

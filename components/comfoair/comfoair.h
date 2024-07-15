@@ -465,14 +465,14 @@ protected:
         if (msg[5]) ventilation_levels_[5] = msg[5];
         if (msg[10]) ventilation_levels_[6] = msg[10];
         if (msg[11]) ventilation_levels_[7] = msg[11]; */
-        if (msg[0]) ventilation_levels_[0] = msg[0];
+/*         if (msg[0]) ventilation_levels_[0] = msg[0];
         if (msg[1]) ventilation_levels_[1] = msg[1];
         if (msg[2]) ventilation_levels_[2] = msg[2];
         if (msg[3]) ventilation_levels_[3] = msg[3];
         if (msg[4]) ventilation_levels_[4] = msg[4];
         if (msg[5]) ventilation_levels_[5] = msg[5];
         if (msg[10]) ventilation_levels_[6] = msg[10];
-        if (msg[11]) ventilation_levels_[7] = msg[11];
+        if (msg[11]) ventilation_levels_[7] = msg[11]; */
         if (return_air_level != nullptr) {
           return_air_level->publish_state(msg[6]);
         }
@@ -889,7 +889,23 @@ protected:
   int8_t update_counter_{-4};
   const int8_t num_update_counter_elements_{9};
 
-  uint8_t ventilation_levels_[8];
+  uint8_t ventilation_levels_[8] ={0, 35, 50, 0, 35, 50, 70, 70};
+  /*
+Logged on 2024-07-14 [22:32:49][D][comfoair:457]: Abw ab 0 - Abw zu 0 - Low ab 35 - Low zu 35 - Middle ab 50 - Middle zu 50 - High ab 70 - High zu 70
+
+Data: 9 bytes
+Byte[0] = Exhaust air absent (%)
+Byte[1] = Exhaust air low / level 1 (%)
+Byte[2] = Exhaust air medium / level 2 (%)
+Byte[3] = Supply air level absent (%)
+Byte[4] = Supply air low / level 1 (%)
+Byte[5] = Supply air medium / level 2 (%)
+Byte[6] = Exhaust air high / level 3 (%)
+Byte[7] = Supply air high / level 3 (%)
+Byte[8] =
+
+Response: ACK
+*/
 
   uint8_t bootloader_version_[13]{0};
   uint8_t firmware_version_[13]{0};

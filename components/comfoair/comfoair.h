@@ -71,8 +71,8 @@ Response: ACK
   // Poll every 600ms
   ComfoAirComponent() :
   Climate(),
-  UARTDevice() { },
-  PollingComponent(600)
+  PollingComponent(600),
+  UARTDevice() { }
 
   /// Return the traits of this controller.
   climate::ClimateTraits traits() override {

@@ -453,8 +453,8 @@ protected:
 
         ESP_LOGI(TAG, "Level Exhaust: %i, Level Supply: %i, Level: %i", msg[6], msg[7], msg[8]);
 
-        ESP_LOGI(TAG, "READING ventilation_levels_ TO: {%i,%i,%i,%i,%i,%i,%i} ", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7]);
-        ESP_LOGI(TAG,"Data: 9 bytes\n\nByte[0] = Exhaust air absent (%)\nByte[1] = Exhaust air low / level 1 (%)\nByte[2] = Exhaust air medium / level 2 (%)\nByte[3] = Supply air level absent (%)\nByte[4] = Supply air low / level 1 (%)\nByte[5] = Supply air medium / level 2 (%)\nByte[6] = Exhaust air high / level 3 (%)\nByte[7] = Supply air high / level 3 (%)\nByte[8] =\nResponse: ACK");
+        ESP_LOGI(TAG, "READING ventilation_levels_ TO: {%i,%i,%i,%i,%i,%i,%i,%i} ", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7], ventilation_levels_[8]);
+        ESP_LOGI(TAG,"Data: 9 bytes=0:Exhaust air absent (%)|1:Exhaust air low / level 1 (%)|2:Exhaust air medium / level 2 (%)\n3:Supply air level absent (%)|4:Supply air low / level 1 (%)|5:Supply air medium / level 2 (%)|6:Exhaust air high / level 3 (%)\n7:Supply air high / level 3 (%)|8:unkown|Response:ACK");
 
         if (return_air_level != nullptr) {
           return_air_level->publish_state(msg[6]);
@@ -872,10 +872,11 @@ protected:
   int8_t update_counter_{-4};
   const int8_t num_update_counter_elements_{9};
 
-  uint8_t ventilation_levels_[8] ={0, 35, 50, 0, 35, 50, 70, 70};
+  uint8_t ventilation_levels_[9] ={0, 35, 50, 0, 35, 50, 70, 70};
   /*
-    Logged on 2024-07-14 [22:32:49][D][comfoair:457]: Abw ab 0 - Abw zu 0 - Low ab 35 - Low zu 35 - Middle ab 50 - Middle zu 50 - High ab 70 - High zu 70
-
+    Logged on 2024-07-16 
+      [16:55:08][I][comfoair:454]: Level Exhaust: 70, Level Supply: 70, Level: 4
+      [16:55:08][I][comfoair:456]: READING ventilation_levels_ TO: {0,0,35,35,50,50,70} 
     Data: 9 bytes
     Byte[0] = Exhaust air absent (%)
     Byte[1] = Exhaust air low / level 1 (%)

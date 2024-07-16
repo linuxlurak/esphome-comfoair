@@ -62,19 +62,7 @@ public:
           0x00
       }; */
         ESP_LOGI(TAG, "SETTING ventilation_levels_ TO: {%i,%i,%i,%i,%i,%i,%i} ", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7]);
-        ESP_LOGI(TAG,"      
-                      Data: 9 bytes
-                      Byte[0] = Exhaust air absent (%)
-                      Byte[1] = Exhaust air low / level 1 (%)
-                      Byte[2] = Exhaust air medium / level 2 (%)
-                      Byte[3] = Supply air level absent (%)
-                      Byte[4] = Supply air low / level 1 (%)
-                      Byte[5] = Supply air medium / level 2 (%)
-                      Byte[6] = Exhaust air high / level 3 (%)
-                      Byte[7] = Supply air high / level 3 (%)
-                      Byte[8] =
-                      Response: ACK
-                      ");
+        ESP_LOGI(TAG,"Data: 9 bytes\n\nByte[0] = Exhaust air absent (%)\nByte[1] = Exhaust air low / level 1 (%)\nByte[2] = Exhaust air medium / level 2 (%)\nByte[3] = Supply air level absent (%)\nByte[4] = Supply air low / level 1 (%)\nByte[5] = Supply air medium / level 2 (%)\nByte[6] = Exhaust air high / level 3 (%)\nByte[7] = Supply air high / level 3 (%)\nByte[8] =\nResponse: ACK");
       write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
     }
   }

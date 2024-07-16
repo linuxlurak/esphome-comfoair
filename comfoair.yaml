@@ -68,12 +68,12 @@ comfoair:
     name: "type"
   size:
     name: "size"
-  supply_fan_speed:
-    name: "supply_fan_speed"
+  intake_fan_speed:
+    name: "intake_fan_speed"
   exhaust_fan_speed:
     name: "exhaust_fan_speed"
-  supply_fan_speed_rpm:
-    name: "supply_fan_speed_rpm"
+  intake_fan_speed_rpm:
+    name: "intake_fan_speed_rpm"
   exhaust_fan_speed_rpm:
     name: "exhaust_fan_speed_rpm"
   ventilation_level:

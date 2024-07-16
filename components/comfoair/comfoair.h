@@ -25,20 +25,20 @@ public:
     ESP_LOGI(TAG, "Setting operation mode target exhaust: %i, supply: %i", exhaust, supply);
     {
 
-/*
-Data: 9 bytes
-Byte[0] = Exhaust air absent (%)
-Byte[1] = Exhaust air low / level 1 (%)
-Byte[2] = Exhaust air medium / level 2 (%)
-Byte[3] = Supply air level absent (%)
-Byte[4] = Supply air low / level 1 (%)
-Byte[5] = Supply air medium / level 2 (%)
-Byte[6] = Exhaust air high / level 3 (%)
-Byte[7] = Supply air high / level 3 (%)
-Byte[8] =
+      /*
+      Data: 9 bytes
+      Byte[0] = Exhaust air absent (%)
+      Byte[1] = Exhaust air low / level 1 (%)
+      Byte[2] = Exhaust air medium / level 2 (%)
+      Byte[3] = Supply air level absent (%)
+      Byte[4] = Supply air low / level 1 (%)
+      Byte[5] = Supply air medium / level 2 (%)
+      Byte[6] = Exhaust air high / level 3 (%)
+      Byte[7] = Supply air high / level 3 (%)
+      Byte[8] =
 
-Response: ACK
-*/
+      Response: ACK
+      */
       uint8_t command[9] = {
           exhaust ? ventilation_levels_[0] : (uint8_t) 0, // ABSENT
           exhaust ? ventilation_levels_[1] : (uint8_t) 0, // 1
@@ -61,10 +61,21 @@ Response: ACK
           supply ? ventilation_levels_[7] : 0,
           0x00
       }; */
-        ESP_LOGI(TAG, "SETTING ventilation_levels_ TO: Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7]);
+        ESP_LOGI(TAG, "SETTING ventilation_levels_ TO: {%i,%i,%i,%i,%i,%i,%i} ", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7]);
+        ESP_LOGI(TAG,"      
+                      Data: 9 bytes
+                      Byte[0] = Exhaust air absent (%)
+                      Byte[1] = Exhaust air low / level 1 (%)
+                      Byte[2] = Exhaust air medium / level 2 (%)
+                      Byte[3] = Supply air level absent (%)
+                      Byte[4] = Supply air low / level 1 (%)
+                      Byte[5] = Supply air medium / level 2 (%)
+                      Byte[6] = Exhaust air high / level 3 (%)
+                      Byte[7] = Supply air high / level 3 (%)
+                      Byte[8] =
+                      Response: ACK
+                      ");
       write_command_(CMD_SET_VENTINATION_LEVEL, command, sizeof(command));
-
-
     }
   }
 
@@ -145,7 +156,6 @@ Response: ACK
   void dump_config() override {
     uint8_t *p;
     ESP_LOGCONFIG(TAG, "ComfoAir:");
-    //LOG_UPDATE_INTERVAL(this);
     p = bootloader_version_;
     ESP_LOGCONFIG(TAG, "  Bootloader %.10s v%0d.%02d b%2d", p + 3, *p, *(p + 1), *(p + 2));
     p = firmware_version_;
@@ -342,7 +352,6 @@ protected:
       // checksum is without checksum bytes
       uint8_t checksum = comfoair_checksum_(data_ + 2, COMMAND_LEN_HEAD + data_length - 2);
       if (checksum != byte) {
-        //ESP_LOGW(TAG, "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X", data_[0], data_[1], data_[2], data_[3], data_[4], data_[5], data_[6], data_[7], data_[8], data_[9], data_[10]);
         ESP_LOGW(TAG, "ComfoAir Checksum doesn't match: 0x%02X!=0x%02X", byte, checksum);
         return false;
       }
@@ -987,9 +996,9 @@ public:
 
   void set_type(text_sensor::TextSensor *type) { this->type = type; };
   void set_size(text_sensor::TextSensor *size) { this->size = size; };
-  void set_supply_fan_speed(sensor::Sensor *supply_fan_speed) { this->supply_fan_speed = supply_fan_speed; };
+  void set_intake_fan_speed(sensor::Sensor *supply_fan_speed) { this->supply_fan_speed = supply_fan_speed; };
   void set_exhaust_fan_speed(sensor::Sensor *exhaust_fan_speed) { this->exhaust_fan_speed = exhaust_fan_speed; };
-  void set_supply_fan_speed_rpm(sensor::Sensor *supply_fan_speed_rpm) { this->supply_fan_speed_rpm = supply_fan_speed_rpm; };
+  void set_intake_fan_speed_rpm(sensor::Sensor *supply_fan_speed_rpm) { this->supply_fan_speed_rpm = supply_fan_speed_rpm; };
   void set_exhaust_fan_speed_rpm(sensor::Sensor *exhaust_fan_speed_rpm) { this->exhaust_fan_speed_rpm = exhaust_fan_speed_rpm; };
   void set_ventilation_level(sensor::Sensor *ventilation_level) { this->ventilation_level = ventilation_level; };
   void set_bypass_valve(sensor::Sensor *bypass_valve) { this->bypass_valve = bypass_valve; };

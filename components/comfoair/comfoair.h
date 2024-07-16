@@ -453,23 +453,9 @@ protected:
 
         ESP_LOGI(TAG, "Level Exhaust: %i, Level Supply: %i, Level: %i", msg[6], msg[7], msg[8]);
 
-        ESP_LOGI(TAG, "Abw ab %i - Abw zu %i - Low ab %i - Low zu %i - Middle ab %i - Middle zu %i - High ab %i - High zu %i", msg[0], msg[3], msg[1], msg[4], msg[2], msg[5], msg[10], msg[11]);
-/*         if (msg[0]) ventilation_levels_[0] = msg[0];
-        if (msg[3]) ventilation_levels_[1] = msg[3];
-        if (msg[1]) ventilation_levels_[2] = msg[1];
-        if (msg[4]) ventilation_levels_[3] = msg[4];
-        if (msg[2]) ventilation_levels_[4] = msg[2];
-        if (msg[5]) ventilation_levels_[5] = msg[5];
-        if (msg[10]) ventilation_levels_[6] = msg[10];
-        if (msg[11]) ventilation_levels_[7] = msg[11]; */
-/*         if (msg[0]) ventilation_levels_[0] = msg[0];
-        if (msg[1]) ventilation_levels_[1] = msg[1];
-        if (msg[2]) ventilation_levels_[2] = msg[2];
-        if (msg[3]) ventilation_levels_[3] = msg[3];
-        if (msg[4]) ventilation_levels_[4] = msg[4];
-        if (msg[5]) ventilation_levels_[5] = msg[5];
-        if (msg[10]) ventilation_levels_[6] = msg[10];
-        if (msg[11]) ventilation_levels_[7] = msg[11]; */
+        ESP_LOGI(TAG, "READING ventilation_levels_ TO: {%i,%i,%i,%i,%i,%i,%i} ", ventilation_levels_[0], ventilation_levels_[3], ventilation_levels_[1], ventilation_levels_[4], ventilation_levels_[2], ventilation_levels_[5], ventilation_levels_[6], ventilation_levels_[7]);
+        ESP_LOGI(TAG,"Data: 9 bytes\n\nByte[0] = Exhaust air absent (%)\nByte[1] = Exhaust air low / level 1 (%)\nByte[2] = Exhaust air medium / level 2 (%)\nByte[3] = Supply air level absent (%)\nByte[4] = Supply air low / level 1 (%)\nByte[5] = Supply air medium / level 2 (%)\nByte[6] = Exhaust air high / level 3 (%)\nByte[7] = Supply air high / level 3 (%)\nByte[8] =\nResponse: ACK");
+
         if (return_air_level != nullptr) {
           return_air_level->publish_state(msg[6]);
         }
@@ -559,7 +545,7 @@ protected:
         break;
       }
       case COMFOAIR_GET_CC_EASE_DATA_RESPONSE: {
-          ESP_LOGW(TAG, "CC_EASE Icon Data exhaust: %i, supply: %i", !!(msg[9] & 0x80), !!(msg[9] & 0x40));
+          ESP_LOGD(TAG, "CC_EASE Icon Data exhaust: %i, supply: %i", !!(msg[9] & 0x80), !!(msg[9] & 0x40));
           break;
       }
       case RES_GET_STATUS: {
@@ -888,21 +874,21 @@ protected:
 
   uint8_t ventilation_levels_[8] ={0, 35, 50, 0, 35, 50, 70, 70};
   /*
-Logged on 2024-07-14 [22:32:49][D][comfoair:457]: Abw ab 0 - Abw zu 0 - Low ab 35 - Low zu 35 - Middle ab 50 - Middle zu 50 - High ab 70 - High zu 70
+    Logged on 2024-07-14 [22:32:49][D][comfoair:457]: Abw ab 0 - Abw zu 0 - Low ab 35 - Low zu 35 - Middle ab 50 - Middle zu 50 - High ab 70 - High zu 70
 
-Data: 9 bytes
-Byte[0] = Exhaust air absent (%)
-Byte[1] = Exhaust air low / level 1 (%)
-Byte[2] = Exhaust air medium / level 2 (%)
-Byte[3] = Supply air level absent (%)
-Byte[4] = Supply air low / level 1 (%)
-Byte[5] = Supply air medium / level 2 (%)
-Byte[6] = Exhaust air high / level 3 (%)
-Byte[7] = Supply air high / level 3 (%)
-Byte[8] =
+    Data: 9 bytes
+    Byte[0] = Exhaust air absent (%)
+    Byte[1] = Exhaust air low / level 1 (%)
+    Byte[2] = Exhaust air medium / level 2 (%)
+    Byte[3] = Supply air level absent (%)
+    Byte[4] = Supply air low / level 1 (%)
+    Byte[5] = Supply air medium / level 2 (%)
+    Byte[6] = Exhaust air high / level 3 (%)
+    Byte[7] = Supply air high / level 3 (%)
+    Byte[8] =
 
-Response: ACK
-*/
+    Response: ACK
+    */
 
   uint8_t bootloader_version_[13]{0};
   uint8_t firmware_version_[13]{0};

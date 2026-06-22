@@ -497,16 +497,15 @@ comfoair_sensors_schemas = cv.Schema(
     }
 )
 
-CONFIG_SCHEMA = cv.All(
-    cv.Schema(
+CONFIG_SCHEMA = (
+    climate.climate_schema(ComfoAirComponent)
+    .extend(
         {
-            cv.GenerateID(CONF_ID): cv.declare_id(ComfoAirComponent),
             cv.Required(REQUIRED_KEY_NAME): cv.string,
         }
     )
     .extend(uart.UART_DEVICE_SCHEMA)
     .extend(comfoair_sensors_schemas)
-    .extend(cv.COMPONENT_SCHEMA)
 )
 
 
@@ -515,6 +514,8 @@ def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     yield cg.register_component(var, config)
     yield uart.register_uart_device(var, config)
+    yield climate.register_climate(var, config)
+    
     cg.add(var.set_name(config[REQUIRED_KEY_NAME]))
     paren = yield cg.get_variable(config[CONF_UART_ID])
     cg.add(var.set_uart_component(paren))
@@ -532,4 +533,4 @@ def to_code(config):
             if sens is not None:
                 func = getattr(var, "set_" + v)
                 cg.add(func(sens))
-    cg.add(cg.App.register_climate(var))
+    

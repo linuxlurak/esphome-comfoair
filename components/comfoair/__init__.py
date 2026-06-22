@@ -11,7 +11,12 @@ from esphome.components import text_sensor
 from esphome import pins
 
 comfoair_ns = cg.esphome_ns.namespace("comfoair")
-ComfoAirComponent = comfoair_ns.class_("ComfoAirComponent", cg.Component)
+ComfoAirComponent = comfoair_ns.class_(
+    "ComfoAirComponent",
+    climate.Climate,
+    cg.Component,
+    uart.UARTDevice,
+)
 
 DEPENDENCIES = ["uart"]
 AUTO_LOAD = ["sensor", "climate", "binary_sensor", "text_sensor"]

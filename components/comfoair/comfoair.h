@@ -17,10 +17,18 @@ static const char *TAG = "comfoair";
 class ComfoAirComponent : public climate::Climate, public PollingComponent, public uart::UARTDevice, public api::CustomAPIDevice {
 public:
 
-  void setup() override {
-      register_service(&ComfoAirComponent::control_set_operation_mode, "climate_set_operation_mode", {"exhaust_fan", "supply_fan"});
-  }
-  
+void setup() override {
+  register_service(
+      &ComfoAirComponent::control_set_operation_mode,
+      "climate_set_operation_mode",
+      {"exhaust_fan", "supply_fan"}
+  );
+
+  // Optimistic initial state because the protocol implementation does not
+  // currently determine the selected operation mode during startup.
+  this->set_custom_preset_("Both");
+}
+
   void control_set_operation_mode(bool exhaust, bool supply) {
     ESP_LOGI(TAG, "Setting operation mode target exhaust: %i, supply: %i", exhaust, supply);
     {
@@ -68,10 +76,16 @@ public:
   }
 
   // Poll every 600ms
-  ComfoAirComponent() :
-  Climate(),
-  PollingComponent(600),
-  UARTDevice() { }
+ComfoAirComponent()
+    : Climate(),
+      PollingComponent(600),
+      UARTDevice() {
+  this->set_supported_custom_presets({
+      "Both",
+      "Intake only",
+      "Exhaust only",
+  });
+}
 
   /// Return the traits of this controller.
 	climate::ClimateTraits traits() override {
@@ -85,9 +99,6 @@ public:
 	    climate::CLIMATE_MODE_FAN_ONLY
 	  });
 	
-	  traits.set_supported_presets({
-	    climate::CLIMATE_PRESET_HOME,
-	  });
     traits.set_visual_min_temperature(12);
     traits.set_visual_max_temperature(29);
     traits.set_visual_temperature_step(1);
@@ -136,6 +147,32 @@ public:
       }
 
     }
+if (call.has_custom_preset()) {
+  const auto operation_mode = call.get_custom_preset();
+  bool valid_operation_mode = true;
+
+  if (operation_mode == "Both") {
+    // Exhaust on, supply on
+    control_set_operation_mode(true, true);
+  } else if (operation_mode == "Intake only") {
+    // Exhaust off, supply on
+    control_set_operation_mode(false, true);
+  } else if (operation_mode == "Exhaust only") {
+    // Exhaust on, supply off
+    control_set_operation_mode(true, false);
+  } else {
+    valid_operation_mode = false;
+    ESP_LOGW(
+        TAG,
+        "Unsupported operation mode: %s",
+        operation_mode.c_str()
+    );
+  }
+
+  if (valid_operation_mode) {
+    this->set_custom_preset_(operation_mode);
+  }
+}
     if (call.get_target_temperature().has_value()) {
       target_temperature = *call.get_target_temperature();
       set_comfort_temperature_(target_temperature);
